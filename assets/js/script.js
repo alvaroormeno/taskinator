@@ -1,7 +1,7 @@
 var formEl = document.querySelector("#task-form")
 var tasksToDoEl = document.querySelector("#tasks-to-do");
 
-var taskIdCounter = 0,
+var taskIdCounter = 0;
     
 var taskFormHandler = function(event) {
 
@@ -48,11 +48,68 @@ var createTaskEl = function(taskDataObj) {
     taskInfoEl.innerHTML = "<h3 class='task-name'>" + taskDataObj.name + "</h3><span class='task-type'>" + taskDataObj.type + "</span>";
     listItemEl.appendChild(taskInfoEl);
 
-    // add entire <li> to list
+    // this variable holds function that create the task actions... buttons and drop down menu
+    var taskActionsEl = createTaskActions(taskIdCounter);
+    // append to (<li>) all task actions
+    listItemEl.appendChild(taskActionsEl);
+
+    // add entire <li> to list (<ul>) which is selected in top variable = taskToDoEl
     tasksToDoEl.appendChild(listItemEl);
 
     // increase counter variable (top of page) by one everytime a task is created
     taskIdCounter++
+};
+
+var createTaskActions = function(taskId) {
+
+    // create a new DIV element with the class name "task-actions"
+    var actionContainerEl = document.createElement("div");
+    actionContainerEl.className = "task-actions";
+
+    // create edit button
+    var editButtonEl = document.createElement("button");
+    editButtonEl.textContent = "Edit";
+    editButtonEl.className = "btn edit-btn";
+    editButtonEl.setAttribute("data-task-id", taskId);
+
+    // add Edit Button into DIV created in actionContainerEl function
+    actionContainerEl.appendChild(editButtonEl);
+
+    // create delete button
+    var deleteButtonEl = document.createElement("button");
+    deleteButtonEl.textContent = "Delete";
+    deleteButtonEl.className = "btn delete-btn";
+    deleteButtonEl.setAttribute("data-task-id", taskId);
+
+    // add Delete Button into DIV created in actionContainerEl function
+    actionContainerEl.appendChild(deleteButtonEl);
+
+
+    // create DROP DOWN menu (<select>) for task status
+    var statusSelectEl = document.createElement("select");
+    statusSelectEl.className = "select-status";
+    statusSelectEl.setAttribute = ("name", "status-change");
+    statusSelectEl.setAttribute = ("data-task-id", taskId);
+
+    // Array of choices for Drop Down (<select>)
+    var statusChoices = ["To Do", "In Progress", "Completed"];
+
+    // for loop that will create a (<option>) element for each array object
+    for (var i = 0; i < statusChoices.length; i++) {
+        // create option element to be added inside Dropdown
+        var statusOptionEl = document.createElement("option");
+        statusOptionEl.textContent = statusChoices[i];
+        statusOptionEl.setAttribute("value", statusChoices[i]);
+
+        // append to dropdown (<select>)
+        statusSelectEl.appendChild(statusOptionEl);
+    }
+
+    // add status Drop Down into DIV created in actionContainerEl function
+    actionContainerEl.appendChild(statusSelectEl);
+
+
+    return actionContainerEl;
 };
 
 
