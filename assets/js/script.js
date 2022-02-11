@@ -1,7 +1,8 @@
 var formEl = document.querySelector("#task-form")
 var tasksToDoEl = document.querySelector("#tasks-to-do");
-    
 
+var taskIdCounter = 0,
+    
 var taskFormHandler = function(event) {
 
     event.preventDefault();
@@ -13,7 +14,7 @@ var taskFormHandler = function(event) {
     var taskDataObj = {
         name: taskNameInput,
         type: taskTypeInput
-    };
+    }
 
     // check if input values are empty strings
     if (!taskNameInput || !taskTypeInput) {
@@ -26,16 +27,18 @@ var taskFormHandler = function(event) {
 
     // send it as an argument to createTaskEl
     createTaskEl(taskDataObj);
-   
-
     
 };
+
 
 var createTaskEl = function(taskDataObj) {
     // create list item
     var listItemEl = document.createElement("li");
     // give it a class name
     listItemEl.className = "task-item";
+
+    // add task id as a costum attribute
+    listItemEl.setAttribute("data-task-id", taskIdCounter);
 
     //create div to hold task info and add to list item
     var taskInfoEl = document.createElement("div");
@@ -47,6 +50,9 @@ var createTaskEl = function(taskDataObj) {
 
     // add entire <li> to list
     tasksToDoEl.appendChild(listItemEl);
+
+    // increase counter variable (top of page) by one everytime a task is created
+    taskIdCounter++
 };
 
 
